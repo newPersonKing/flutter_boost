@@ -34,6 +34,7 @@ public class FitSystemWindowFrameLayout extends FrameLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    /*todo 适配各种变形屏幕 是否有效*/
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WindowInsets dispatchApplyWindowInsets(WindowInsets insets) {

@@ -230,6 +230,7 @@ public class FlutterBoostPlugin implements FlutterPlugin, Messages.NativeRouterA
         return new LinkedList<String>(allContainers.keySet());
     }
 
+    /*可以理解为每一个引擎的 容器*/
     public static class ContainerShadowNode implements FlutterViewContainerObserver {
         private WeakReference<FlutterViewContainer> container;
         private FlutterBoostPlugin plugin;
@@ -243,11 +244,14 @@ public class FlutterBoostPlugin implements FlutterPlugin, Messages.NativeRouterA
             assert container != null;
             this.container = new WeakReference<>(container);
             this.plugin = plugin;
+
+            /*BackForeGroundEvent todo 代表什么意思呢？*/
             setBackForeGroundEvent(BackForeGroundEvent.NONE);
         }
 
         private boolean isCurrentTopContainer() {
             assert getUniqueId() != null;
+            /*获取最后添加的Container*/
             FlutterViewContainer top = plugin.getTopContainer();
             if (top != null && top.getUniqueId() == getUniqueId()) {
                 return true;
@@ -290,6 +294,7 @@ public class FlutterBoostPlugin implements FlutterPlugin, Messages.NativeRouterA
 
         @Override
         public void onAppear(InitiatorLocation location) {
+            /*默认这里判断是不通过的*/
             if (isCurrentTopContainer() &&
                     InitiatorLocation.SwitchTabs == location &&
                     BackForeGroundEvent.FOREGROUND != event) {
@@ -298,7 +303,9 @@ public class FlutterBoostPlugin implements FlutterPlugin, Messages.NativeRouterA
             }
 
             setBackForeGroundEvent(BackForeGroundEvent.NONE);
+            /*添加自己到allContainers中*/
             plugin.reorderContainer(getUniqueId(), this);
+            /*通过 binaryMessenger 发送消息*/
             plugin.pushRoute(getUniqueId(), getUrl(), getUrlParams(), null);
             Log.v(TAG, "#onAppear: " + location + ", " + getUniqueId() + ", " + plugin.getContainers());
         }

@@ -74,6 +74,7 @@ public class Messages {
   }
 
   /** Generated class from Pigeon that represents Flutter messages that can be called from Java.*/
+  /*持有 发送消息的binaryMessenger*/
   public static class FlutterRouterApi {
     private final BinaryMessenger binaryMessenger;
     public FlutterRouterApi(BinaryMessenger argBinaryMessenger){

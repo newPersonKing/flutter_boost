@@ -32,6 +32,7 @@ public class ActivityAndFragmentPatch {
      * 重写onBackPressed
      */
     public static void onBackPressed() {
+        /*移除一个page 或者直接关闭当前*/
         FlutterBoost.instance().getPlugin().popRoute(null, null);
     }
 

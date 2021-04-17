@@ -65,6 +65,8 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
 
   @override
   void initState() {
+    /*创建 BoostContainer 并添加 */
+    /*_containers 默认是会有一个 pageName 为 widget.initialRoute 的Container*/
     _containers.add(_createContainer(PageInfo(pageName: widget.initialRoute)));
     _nativeRouterApi = NativeRouterApi();
     _boostFlutterRouterApi = BoostFlutterRouterApi(this);
@@ -77,10 +79,12 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
     }());
   }
 
+  /*默认生成的页面没有内容*/
   @override
   Widget build(BuildContext context) {
     return widget.appBuilder(WillPopScope(
         onWillPop: () async {
+          /*监听返回键*/
           final bool canPop = topContainer.navigator.canPop();
           if (canPop) {
             topContainer.navigator.pop();
@@ -111,6 +115,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
   }
 
   void refresh() {
+    /*清除 _lastEntries 并且 insertAll containers */
     refreshOverlayEntries(containers);
 
     // try to save routes to host.
@@ -132,6 +137,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
         routeFactory: widget.routeFactory);
   }
 
+  /*好像只有热启动的时候 会调用 也就是只有debug的时候 会调用*/
   Future<void> _saveStackForHotRestart() async {
     final StackInfo stack = StackInfo();
     stack.containers = <String>[];
@@ -194,12 +200,15 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
     return completer.future;
   }
 
+  /*todo 每个uniqueId 对应一个BoostContainer*/
+  /*创建一个新的对应一个BoostContainer 或者添加新的页面到 已经存在的BoostContainer中*/
   void push(String pageName,
       {String uniqueId, Map<String, dynamic> arguments, bool withContainer}) {
     _cancelActivePointers();
     final BoostContainer existed = _findContainerByUniqueId(uniqueId);
     if (existed != null) {
       if (topContainer?.pageInfo?.uniqueId != uniqueId) {
+        /*把整个Container 移动到top*/
         containers.remove(existed);
         containers.add(existed);
         refresh();
@@ -265,6 +274,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
       container = topContainer;
     }
 
+    /*container?.navigator? 尝试去弹出页面*/
     final bool handled = await container?.navigator?.maybePop();
     if (handled != null && !handled) {
       assert(container.pageInfo.withContainer);
@@ -272,6 +282,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
         ..pageName = container.pageInfo.pageName
         ..uniqueId = container.pageInfo.uniqueId
         ..arguments = arguments ?? <String, dynamic>{};
+      /*如果没有页面可以弹出了 那么就关闭 整个Container*/
       _nativeRouterApi.popRoute(params);
     }
     _pendingResult.remove(uniqueId);
@@ -280,6 +291,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
         'pop container, uniqueId=$uniqueId, arguments:$arguments, $container');
   }
 
+  /*关闭一个 Activity */
   void _removeContainer(BoostContainer page) {
     containers.remove(page);
     if (page.pageInfo.withContainer) {

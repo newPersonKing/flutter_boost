@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_boost/boost_navigator.dart';
 import 'package:flutter_boost/flutter_boost_app.dart';
 
+/*每个container 内部持有一个Navigator 用来做自己的页面管理 */
 class BoostContainer extends StatefulWidget {
   BoostContainer({LocalKey key, this.routeFactory, this.pageInfo})
       : super(key: key) {

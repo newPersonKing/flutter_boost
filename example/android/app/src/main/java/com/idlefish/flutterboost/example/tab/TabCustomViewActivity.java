@@ -29,6 +29,7 @@ public class TabCustomViewActivity extends AppCompatActivity implements BottomNa
         HashMap<String, String> params = new HashMap<>();
         params.put("url", url);
         // #1. create FlutterBoostView
+        // FlutterBoostView 是一个FrameLayout 包含一个FlutterView 并且跟声明周期已经绑定
         return FlutterBoostView.withCachedEngine(FlutterBoost.ENGINE_ID)
                 .transparencyMode(TransparencyMode.transparent)
                 .renderMode(RenderMode.texture)

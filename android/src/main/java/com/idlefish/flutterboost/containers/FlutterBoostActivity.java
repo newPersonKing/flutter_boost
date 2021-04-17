@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterView;
 import io.flutter.embedding.android.RenderMode;
@@ -70,6 +71,8 @@ public class FlutterBoostActivity extends FlutterActivity implements FlutterView
         }
 
         super.onResume();
+
+        /*每次启动 都去加载内容*/
         observer.onAppear(InitiatorLocation.Others);
         ActivityAndFragmentPatch.onResumeAttachToFlutterEngine(flutterView,
                 getFlutterEngine(), this);
@@ -78,6 +81,7 @@ public class FlutterBoostActivity extends FlutterActivity implements FlutterView
     @Override
     protected void onStop() {
         super.onStop();
+        /*todo 这里的 LifecycleChannel 不知道作用？？？？*/
         getFlutterEngine().getLifecycleChannel().appIsResumed();
         observer.onDisappear(InitiatorLocation.Others);
     }
@@ -95,6 +99,8 @@ public class FlutterBoostActivity extends FlutterActivity implements FlutterView
         FlutterEngine engine = getFlutterEngine();
         super.onDestroy();
         engine.getLifecycleChannel().appIsResumed();
+
+        /*移除一个page 或者 直接移除一个Container 这里应该是移除一个 Container*/
         observer.onDestroyView();
     }
 

@@ -16,6 +16,7 @@ void refreshOverlayEntries(List<BoostContainer> containers) {
     }
   }
 
+  /*_lastEntries 就是上一次的所有页面*/
   _lastEntries = containers
       .map<_ContainerOverlayEntry>(
           (BoostContainer container) => _ContainerOverlayEntry(container))

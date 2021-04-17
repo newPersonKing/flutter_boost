@@ -18,7 +18,10 @@ public class MyApplication extends FlutterApplication {
     public void onCreate() {
         super.onCreate();
 
+        /*创建default 引擎 并启动*/
         FlutterBoost.instance().setup(this, new MyFlutterBoostDelegate(),engine->{
+
+            /*todo 这个回调有何意义？？*/
             engine.getPlugins();
         } );
 

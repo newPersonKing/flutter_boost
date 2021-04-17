@@ -182,6 +182,7 @@ class NativeRouterApi {
     }
   }
 
+  /*跳转 使用的是同一个引擎  但是启动的是不同容器*/
   Future<void> pushFlutterRoute(CommonParams arg) async {
     final Object encoded = arg.encode();
     const BasicMessageChannel<Object> channel =

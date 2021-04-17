@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         params.put("bool", true);
         params.put("int", 666);
         //Add some params if needed.
+        /*点击打开 原生页面没有什么可以看的*/
         if (v == mOpenNative) {
             NativeRouter.openPageByUrl(this, NativeRouter.NATIVE_PAGE_URL , params);
         } else if (v == mOpenFlutter) {
